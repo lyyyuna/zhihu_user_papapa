@@ -7,11 +7,7 @@ import random
 import config
 
 
-useragents = ['Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.3; WOW64; Trident/7.0; .NET4.0E; .NET4.0C; InfoPath.3; MS-RTC LM 8)',
-'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0',
-'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0.1) Gecko/20100101 Firefox/47.0',
-'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; TencentTraveler 4.0)',
-'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; 360SE)',
+useragents = ['Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.3; WOW64; Trident/7.0; .NET4.0E; .NET4.0C; InfoPath.3; MS-RTC LM 8)'
 ]
 useragents_len = len(useragents)
 
@@ -65,13 +61,13 @@ def download_user(url):
                 gender = '0'
             else:
                 gender = '1'
-            
+
         employmenthtml = soup.select("span.employment")
         if employmenthtml == []:
             employment = ''
         else:
             employment = employmenthtml[0]['title']
-        
+
         positionhtml = soup.select("span.position")
         if positionhtml == []:
             position = ''
@@ -134,10 +130,9 @@ def download_user(url):
 
         item = [url[23:], link, name, location, business, gender, employment, position, education, education_extra,\
                 agree, thanks, asks, answsers, posts, collections, logs, following, follower]
-        
+
         return item
     except:
         gevent.sleep(2)
         print (url)
         return None
-
