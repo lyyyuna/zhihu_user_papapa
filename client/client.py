@@ -1,3 +1,4 @@
+from __future__ import print_function
 from gevent import monkey
 monkey.patch_all()
 
@@ -12,12 +13,16 @@ import config
 import random
 
 
+
 CONTROLLER = config.url + config.INDEX_URL #'http://127.0.0.1:5000/lmiguelvargasf/'
 CONTROLLER_POST = config.url + config.XUYAO_URL #'http://127.0.0.1:5000/lmiguelvargasf/xuyao/'
 
 tasks = Queue()
 group = Group()
 users = []
+
+
+print('begin download')
 
 def crawler():
     global users
@@ -29,6 +34,7 @@ def crawler():
             break
         if result != None:
             users.append(result)
+        gevent.sleep(config.WORKER_DELAY)
 
 asn = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 def generate_url(i):
@@ -36,9 +42,9 @@ def generate_url(i):
         return False
     i = i-1
     ch1 = asn[i%62]
-    ch2 = asn[i/62%62]
-    ch3 = asn[i/62/62%62]
-    ch4 = asn[i/62/62/62%62]
+    ch2 = asn[i//62%62]
+    ch3 = asn[i//62//62%62]
+    ch4 = asn[i//62//62//62%62]
     
     for index,ch in enumerate(asn):
         url = 'http://www.zhihu.com/l/' + 'G' +ch3+ch2+ch1+ch
@@ -56,11 +62,11 @@ while True:
         if generate_url(int(r.text)) == False:
             break
     except Exception as e:
-        print 'error'
-        print e
-        time.sleep(5)
+        print ('controller no response error')
+        print (e)
+        time.sleep(config.CLIENT_CONTROLLER_NO_RESPONSE_DELAY)
         continue
-    print r.text
+    print (r.text)
 
 
     
@@ -84,22 +90,22 @@ while True:
             finish_count = int(r.text)
             flag = True
         except Exception as e:
-            print e
-            print 'error'
+            print (e)
+            print ('controller no response error')
 
         if flag == True:
             break
         else:
-            time.sleep(10)
+            time.sleep(config.CLIENT_CONTROLLER_NO_RESPONSE_DELAY)
             continue
 
     if users == []:
-        print payload
-    print r.text
+        print (payload)
+    print (r.text)
 
     rannum = random.random()
     if rannum > 0.9:
-        time.sleep(10)
+        time.sleep(config.CLIENT_LONG_DELAY)
     else:
-        time.sleep(2)
+        time.sleep(config.CLIENT_SHORT_DELAY)
     # break

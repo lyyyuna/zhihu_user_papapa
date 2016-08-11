@@ -1,16 +1,17 @@
+from __future__ import print_function
 import requests
 from bs4 import BeautifulSoup
 import json
 import gevent
 import random
+import config
+
 
 useragents = ['Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.3; WOW64; Trident/7.0; .NET4.0E; .NET4.0C; InfoPath.3; MS-RTC LM 8)',
 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0',
-'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0.1) Gecko/20100101 Firefox/4.0.1',
-'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11',
+'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0.1) Gecko/20100101 Firefox/47.0',
 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; TencentTraveler 4.0)',
 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; 360SE)',
-'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'
 ]
 useragents_len = len(useragents)
 
@@ -21,12 +22,20 @@ def download_user(url):
     try:
         response = requests.get(url, headers = headers)
     except Exception as e:
-        print 'error, will sleep 100 seconds.......'
-        print e
-        gevent.sleep(100)
+        print ('error, will sleep 100 seconds.......')
+        print (e)
+        gevent.sleep(config.DOWNLOAD_ERROR_DELAY)
         return None
 
     text = response.text
+
+    if text.find('i@zhihu.com') != -1:
+        print ('ip too fast, will sleep 600 seconds.......')
+        gevent.sleep(config.DOWNLOAD_TOOFAST_DELAY)
+        return None
+    else:
+        pass
+
 
     try:
         soup = BeautifulSoup(text, 'html.parser')
@@ -129,6 +138,6 @@ def download_user(url):
         return item
     except:
         gevent.sleep(2)
-        print url
+        print (url)
         return None
 

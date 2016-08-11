@@ -27,6 +27,8 @@ while True:
         users = response.json()
         users = users['users']
         if users == []:
+            print ('empty')
+            time.sleep(20)
             continue
         
 

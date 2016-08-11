@@ -12,6 +12,16 @@
 
     url = 'http://xxxxxxxxxx'
 
+    WORKER_NUM = 2
+    WORKER_DELAY = 2
+    CLIENT_LONG_DELAY = 10
+    CLIENT_SHORT_DELAY = 20
+    DOWNLOAD_TOOFAST_DELAY = 600 # do not edit
+    DOWNLOAD_ERROR_DELAY = 100 # do not edit
+
+    CLIENT_CONTROLLER_NO_RESPONSE_DELAY = 5
+
+
 
 ## Changelog
 
