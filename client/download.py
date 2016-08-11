@@ -2,9 +2,22 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import gevent
+import random
+
+useragents = ['Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.3; WOW64; Trident/7.0; .NET4.0E; .NET4.0C; InfoPath.3; MS-RTC LM 8)',
+'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0',
+'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0.1) Gecko/20100101 Firefox/4.0.1',
+'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11',
+'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; TencentTraveler 4.0)',
+'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; 360SE)',
+'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'
+]
+useragents_len = len(useragents)
+
 
 def download_user(url):
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0'}
+    useragent = useragents[random.randint(0, useragents_len-1)]
+    headers = {'User-Agent': useragent}
     try:
         response = requests.get(url, headers = headers)
     except:

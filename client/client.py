@@ -9,6 +9,7 @@ import download
 import json
 import time
 import config
+import random
 
 
 CONTROLLER = config.url + config.INDEX_URL #'http://127.0.0.1:5000/lmiguelvargasf/'
@@ -51,19 +52,21 @@ while True:
     payload = {'pw': 'cc'}
     try:
         r = requests.post(CONTROLLER, json=payload)
-    except:
-        time.sleep(5)
+        # stop the crawler
+        if generate_url(int(r.text)) == False:
+            break
+    except Exception as e:
         print 'error'
+        print e
+        time.sleep(5)
         continue
     print r.text
 
-    # stop the crawler
-    if generate_url(int(r.text)) == False:
-        break
+
     
     # clean users list
     users = []
-    for i in range(4):
+    for i in range(config.WORKER_NUM):
         g = gevent.spawn(crawler)
         group.add(g)
 
@@ -74,12 +77,29 @@ while True:
     else:
         payload = {'users': users}
     
-    r = requests.post(CONTROLLER_POST, json=payload)
+    while True:
+        flag = False
+        try:
+            r = requests.post(CONTROLLER_POST, json=payload)
+            finish_count = int(r.text)
+            flag = True
+        except Exception as e:
+            print e
+            print 'error'
+
+        if flag == True:
+            break
+        else:
+            time.sleep(10)
+            continue
 
     if users == []:
         print payload
     print r.text
 
-
-    time.sleep(5)
+    rannum = random.random()
+    if rannum > 0.9:
+        time.sleep(10)
+    else:
+        time.sleep(2)
     # break
