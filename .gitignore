@@ -1,4 +1,5 @@
 # Python
 *.pyc
 venv
+__pycache__
 config.py

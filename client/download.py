@@ -20,8 +20,10 @@ def download_user(url):
     headers = {'User-Agent': useragent}
     try:
         response = requests.get(url, headers = headers)
-    except:
-        gevent.sleep(20)
+    except Exception as e:
+        print 'error, will sleep 100 seconds.......'
+        print e
+        gevent.sleep(100)
         return None
 
     text = response.text
