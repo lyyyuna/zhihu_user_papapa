@@ -66,7 +66,7 @@ while True:
         print (e)
         time.sleep(config.CLIENT_CONTROLLER_NO_RESPONSE_DELAY)
         continue
-    print (r.text)
+    print ('user_count: ', r.text)
 
 
     
@@ -101,7 +101,7 @@ while True:
 
     if users == []:
         print (payload)
-    print (r.text)
+    print ('finish_count: ', r.text)
 
     rannum = random.random()
     if rannum > 0.9:
