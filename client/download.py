@@ -15,22 +15,30 @@ useragents_len = len(useragents)
 def download_user(url):
     useragent = useragents[random.randint(0, useragents_len-1)]
     headers = {'User-Agent': useragent}
-    try:
-        response = requests.get(url, headers = headers)
-    except Exception as e:
-        print ('error, will sleep 100 seconds.......')
-        print (e)
-        gevent.sleep(config.DOWNLOAD_ERROR_DELAY)
-        return None
 
-    text = response.text
+    while True:
+        error_flag = False
+        try:
+            response = requests.get(url, headers = headers)
+        except Exception as e:
+            print ('error, will sleep 100 seconds.......')
+            print (e)
+            gevent.sleep(config.DOWNLOAD_ERROR_DELAY)
+            error_flag = True
 
-    if text.find('i@zhihu.com') != -1:
-        print ('ip too fast, will sleep 600 seconds.......')
-        gevent.sleep(config.DOWNLOAD_TOOFAST_DELAY)
-        return None
-    else:
-        pass
+        text = response.text
+
+        if text.find('i@zhihu.com') != -1:
+            print ('ip too fast, will sleep 600 seconds.......')
+            gevent.sleep(config.DOWNLOAD_TOOFAST_DELAY)
+            error_flag = True
+        else:
+            pass
+
+        if error_flag == True:
+            pass
+        else:
+            break
 
 
     try:
