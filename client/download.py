@@ -7,7 +7,9 @@ import random
 import config
 
 
-useragents = ['Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.3; WOW64; Trident/7.0; .NET4.0E; .NET4.0C; InfoPath.3; MS-RTC LM 8)'
+useragents = ['Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.3; WOW64; Trident/7.0; .NET4.0E; .NET4.0C; InfoPath.3; MS-RTC LM 8)',
+'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0'
 ]
 useragents_len = len(useragents)
 
@@ -19,7 +21,8 @@ def download_user(url):
     while True:
         error_flag = False
         try:
-            response = requests.get(url, headers = headers)
+            sess = requests.Session()
+            response = sess.get(url, headers = headers)
             text = response.text
             if text.find('i@zhihu.com') != -1:
                 print ('ip too fast, will sleep 600 seconds.......')
