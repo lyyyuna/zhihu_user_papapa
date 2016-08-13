@@ -27,13 +27,13 @@ def download_user(url):
             text = response.text
             # 判断是否出现了 IP 频繁访问的页面
             if text.find('i@zhihu.com') != -1 and text.find('zu-top-search-button') == -1:
-                print ('ip too fast, will sleep 600 seconds.......')
+                print ('ip too fast, will sleep', config.DOWNLOAD_TOOFAST_DELAY ,'seconds.......')
                 gevent.sleep(config.DOWNLOAD_TOOFAST_DELAY)
                 error_flag = True
             else:
                 pass
         except Exception as e:
-            print ('error, will sleep 100 seconds.......')
+            print ('error, will sleep', config.DOWNLOAD_ERROR_DELAY ,'seconds.......')
             print (e)
             gevent.sleep(config.DOWNLOAD_ERROR_DELAY)
             error_flag = True
