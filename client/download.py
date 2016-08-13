@@ -1,3 +1,4 @@
+#coding=utf-8
 from __future__ import print_function
 import requests
 from bs4 import BeautifulSoup
@@ -24,7 +25,8 @@ def download_user(url):
             sess = requests.Session()
             response = sess.get(url, headers = headers)
             text = response.text
-            if text.find('i@zhihu.com') != -1:
+            # 判断是否出现了 IP 频繁访问的页面
+            if text.find('i@zhihu.com') != -1 and text.find('zu-top-search-button') == -1:
                 print ('ip too fast, will sleep 600 seconds.......')
                 gevent.sleep(config.DOWNLOAD_TOOFAST_DELAY)
                 error_flag = True

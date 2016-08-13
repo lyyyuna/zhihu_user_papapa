@@ -45,10 +45,10 @@ def generate_url(i):
     ch2 = asn[i//62%62]
     ch3 = asn[i//62//62%62]
     ch4 = asn[i//62//62//62%62]
-    
+
     for index,ch in enumerate(asn):
         url = 'http://www.zhihu.com/l/' + 'G' +ch3+ch2+ch1+ch
-        # url = 'http://www.zhihu.com/l/G4gQ' + ch  
+        # url = 'http://www.zhihu.com/l/G4gQ' + ch
         tasks.put(url)
 
     return True
@@ -69,7 +69,7 @@ while True:
     print ('user_count: ', r.text)
 
 
-    
+
     # clean users list
     users = []
     for i in range(config.WORKER_NUM):
@@ -82,7 +82,7 @@ while True:
         payload = {'empty': 'yes'}
     else:
         payload = {'users': users}
-    
+
     while True:
         flag = False
         try:
